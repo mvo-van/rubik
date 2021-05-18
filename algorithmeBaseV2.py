@@ -252,7 +252,7 @@ print("18 finish")
 jsonBase[2]["la grande couronne"][0]["mid"]+=[{"12":findQuickPlaceMid(12,[8,3,9,6,10,13,11,16,7,17,18,15],[8,5,2,9,3,12,10,7,16,11,14,17],[2,7,3,4],[3,5,7,8,6,10],)}]
 print("12 finish")
 jsonBase[2]["la grande couronne"][0]["mid"]+=[{"1":findQuickPlaceMid(1,[8,3,9,6,10,13,11,16,7,17,18,15,12,2],[8,5,2,9,3,12,10,7,16,11,14,17],[2,7,3,4],[3,5,7,8,6,10,2],)}]
-print("7 finish")
+print("1 finish")
 
 
 
