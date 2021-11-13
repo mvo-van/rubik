@@ -138,6 +138,39 @@ def findQuickPlaceMid(nbr,lstOkMid,lstOkCross,lstOkgroupCross,lstOkgroupMid):
             test.cube['mid'][i] = -1
     return result
 
+def findQuickPlaceGroupMid(nbr,lstOkMid,lstOkCross,lstOkgroupCross,lstOkgroupMid):
+    arg="RR'"
+    arg=re.sub(" $","",re.sub(r"([BUFDLR][\'2]?)",r"\1 ",re.sub("[\t ]","",arg)))
+    arg=re.split(" ",arg)
+    test = rubik(arg)
+    result = {}
+    for i in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]:
+        test.cube['mid'][i] = -1
+        test.cube['cross'][i] = -1
+        if i < 12:
+            test.cube['groupMid'][i] = -1
+        if i < 8:
+            test.cube['groupCross'][i] = -1    
+  
+    for i in lstOkMid:
+        test.cube['mid'][i] = i
+    for i in lstOkCross:
+        test.cube['cross'][i] = i
+    for i in lstOkgroupMid:
+        test.cube['groupMid'][i] = i
+    for i in lstOkgroupCross:
+        test.cube['groupCross'][i] = i
+    
+    for i in [0,1,2,3,4,5,6,7,8,9,10,11]:
+        if i not in lstOkgroupMid:
+            test.cube['groupMid'][i] = nbr
+            #print(test.cube["mid"])
+            chemin = findChemin(test,'')
+            #print(chemin)
+            result[str(i)]=chemin
+            test.cube['groupMid'][i] = -1
+    return result
+
 def findQuickPlaceCross(nbr,lstOkMid,lstOkCross,lstOkgroupCross,lstOkgroupMid):
     arg="RR'"
     arg=re.sub(" $","",re.sub(r"([BUFDLR][\'2]?)",r"\1 ",re.sub("[\t ]","",arg)))
@@ -210,38 +243,41 @@ def findChemin(cube,notMouv):
                 return chemin
         difChemin=newDifChemin
 
-file = open('base.json','r')
+file = open('generale.json','r')
 jsonBase = json.loads(file.read())
 file.close()
+print(jsonBase)
+# jsonBase += [{"placer les aretes":[]}]
 # print(jsonBase)
-# jsonBase += [{"croix du haut":[]}]
-# print(jsonBase)
-# jsonBase[0]["croix du haut"]+=[{"mid":[]}]
-# jsonBase[0]["croix du haut"][0]["mid"]+=[{"8":findQuickPlaceMid(8,[],[],[],[],)}]
+# jsonBase[0]["placer les aretes"]+=[{"groupMid":[]}]
+# jsonBase[0]["placer les aretes"][0]["groupMid"]+=[{"0":findQuickPlaceGroupMid(0,[],[],[],[],)}]
+# print("0 finish")
+# jsonBase[0]["placer les aretes"][0]["groupMid"]+=[{"1":findQuickPlaceGroupMid(1,[],[],[],[0],)}]
+# print("1 finish")
+# jsonBase[0]["placer les aretes"][0]["groupMid"]+=[{"2":findQuickPlaceGroupMid(2,[],[],[],[0,1],)}]
+# print("2 finish")
+# jsonBase[0]["placer les aretes"][0]["groupMid"]+=[{"3":findQuickPlaceGroupMid(3,[],[],[],[0,1,2],)}]
+# print("3 finish")
+# jsonBase[0]["placer les aretes"][0]["groupMid"]+=[{"4":findQuickPlaceGroupMid(4,[],[],[],[0,1,2,3],)}]
+# print("4 finish")
+# jsonBase[0]["placer les aretes"][0]["groupMid"]+=[{"5":findQuickPlaceGroupMid(5,[],[],[],[0,1,2,3,4],)}]
+# print("5 finish")
+# jsonBase[0]["placer les aretes"][0]["groupMid"]+=[{"7":findQuickPlaceGroupMid(7,[],[],[],[0,1,2,3,4,5],)}]
+# print("7 finish")
+# jsonBase[0]["placer les aretes"][0]["groupMid"]+=[{"6":findQuickPlaceGroupMid(6,[],[],[],[0,1,2,3,4,5,7],)}]
+# print("6 finish")
+# jsonBase[0]["placer les aretes"][0]["groupMid"]+=[{"8":findQuickPlaceGroupMid(8,[],[],[],[0,1,2,3,4,5,7,6],)}]
 # print("8 finish")
-# jsonBase[0]["croix du haut"][0]["mid"]+=[{"9":findQuickPlaceMid(9,[8,3],[],[],[3],)}]
-# print("9 finish")
-# jsonBase[0]["croix du haut"][0]["mid"]+=[{"10":findQuickPlaceMid(10,[8,3,9,6],[],[],[3,5],)}]
-# print("10 finish")
-# jsonBase[0]["croix du haut"][0]["mid"]+=[{"11":findQuickPlaceMid(11,[8,3,9,6,10,13],[],[],[3,5,7],)}]
+# jsonBase[0]["placer les aretes"][0]["groupMid"]+=[{"11":findQuickPlaceGroupMid(11,[],[],[],[0,1,2,3,4,5,7,6,8],)}]
 # print("11 finish")
-# print(jsonBase)
-# jsonBase += [{"face du haut":[]}]
-# print(jsonBase)
-# jsonBase[1]["face du haut"]+=[{"cross":[]}]
-# jsonBase[1]["face du haut"][0]["cross"]+=[{"8":findQuickPlaceCross(8,[8,3,9,6,10,13,11,16],[],[],[3,5,7,8],)}]
-# print("8 finish")
-# jsonBase[1]["face du haut"][0]["cross"]+=[{"9":findQuickPlaceCross(9,[8,3,9,6,10,13,11,16],[8,5,2],[2],[3,5,7,8],)}]
-# print("9 finish")
-# jsonBase[1]["face du haut"][0]["cross"]+=[{"10":findQuickPlaceCross(10,[8,3,9,6,10,13,11,16],[8,5,2,9,3,12],[2,7],[3,5,7,8],)}]
-# print("10 finish")
-# jsonBase[1]["face du haut"][0]["cross"]+=[{"11":findQuickPlaceCross(11,[8,3,9,6,10,13,11,16],[8,5,2,9,3,12,10,7,16],[2,7,3],[3,5,7,8],)}]
-# print("11 finish")
+jsonBase += [{"orianter les aretes":[]}]
+print(jsonBase)
+jsonBase[1]["orianter les aretes"]+=[{"mid":[]}]
+jsonBase[1]["orianter les aretes"][0]["mid"]+=[{"0":findQuickPlaceMid(0,[],[],[],[0,1,2,3,4,5,7,6,8,11,10,9],)}]
+print("0 finish")
 
 
-
-
-file = open('base.json','w')
+file = open('generale.json','w')
 file.write(json.dumps(jsonBase))
 file.close()
 #print(json)

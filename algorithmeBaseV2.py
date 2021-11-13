@@ -138,6 +138,72 @@ def findQuickPlaceMid(nbr,lstOkMid,lstOkCross,lstOkgroupCross,lstOkgroupMid):
             test.cube['mid'][i] = -1
     return result
 
+def findQuickPlaceColorGroupMid(nbr,lstOkMid,lstOkCross,lstOkgroupCross,lstOkgroupMid):
+    arg="RR'"
+    arg=re.sub(" $","",re.sub(r"([BUFDLR][\'2]?)",r"\1 ",re.sub("[\t ]","",arg)))
+    arg=re.split(" ",arg)
+    test = rubik(arg)
+    result = {}
+    for i in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]:
+        test.cube['mid'][i] = -1
+        test.cube['cross'][i] = -1
+        if i < 12:
+            test.cube['groupMid'][i] = -1
+        if i < 8:
+            test.cube['groupCross'][i] = -1    
+  
+    for i in lstOkMid:
+        test.cube['mid'][i] = i
+    for i in lstOkCross:
+        test.cube['cross'][i] = i
+    for i in lstOkgroupMid:
+        test.cube['groupMid'][i] = i
+    for i in lstOkgroupCross:
+        test.cube['groupCross'][i] = i
+    
+    for i in [0,1,2,3,4,5,6,7,8,9,10,11]:
+        if i not in lstOkgroupMid:
+            test.cube['groupMid'][i] = nbr
+            #print(test.cube["mid"])
+            chemin = findChemin(test,'')
+            #print(chemin)
+            result[str(i)]=chemin
+            test.cube['groupMid'][i] = -1
+    return result
+
+def findQuickPlaceGroupMid(nbr,lstOkMid,lstOkCross,lstOkgroupCross,lstOkgroupMid):
+    arg="RR'"
+    arg=re.sub(" $","",re.sub(r"([BUFDLR][\'2]?)",r"\1 ",re.sub("[\t ]","",arg)))
+    arg=re.split(" ",arg)
+    test = rubik(arg)
+    result = {}
+    for i in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]:
+        test.cube['mid'][i] = -1
+        test.cube['cross'][i] = -1
+        if i < 12:
+            test.cube['groupMid'][i] = -1
+        if i < 8:
+            test.cube['groupCross'][i] = -1    
+  
+    for i in lstOkMid:
+        test.cube['mid'][i] = i
+    for i in lstOkCross:
+        test.cube['cross'][i] = i
+    for i in lstOkgroupMid:
+        test.cube['groupMid'][i] = i
+    for i in lstOkgroupCross:
+        test.cube['groupCross'][i] = i
+    
+    for i in [0,1,2,3,4,5,6,7,8,9,10,11]:
+        if i not in lstOkgroupMid:
+            test.cube['groupMid'][i] = nbr
+            #print(test.cube["mid"])
+            chemin = findChemin(test,'')
+            #print(chemin)
+            result[str(i)]=chemin
+            test.cube['groupMid'][i] = -1
+    return result
+
 def findQuickPlaceCross(nbr,lstOkMid,lstOkCross,lstOkgroupCross,lstOkgroupMid):
     arg="RR'"
     arg=re.sub(" $","",re.sub(r"([BUFDLR][\'2]?)",r"\1 ",re.sub("[\t ]","",arg)))
@@ -241,19 +307,33 @@ file.close()
 # jsonBase[1]["face du haut"][0]["cross"]+=[{"11":findQuickPlaceCross(11,[8,3,9,6,10,13,11,16],[8,5,2,9,3,12,10,7,16],[2,7,3],[3,5,7,8],)}]
 # print("11 finish")
 
-print(jsonBase)
+#print(jsonBase)
 #jsonBase += [{"la grande couronne":[]}]
 # print(jsonBase)
 # jsonBase[2]["la grande couronne"]+=[{"mid":[]}]
 # jsonBase[2]["la grande couronne"][0]["mid"]+=[{"7":findQuickPlaceMid(7,[8,3,9,6,10,13,11,16],[8,5,2,9,3,12,10,7,16,11,14,17],[2,7,3,4],[3,5,7,8],)}]
 # print("7 finish")
-jsonBase[2]["la grande couronne"][0]["mid"]+=[{"18":findQuickPlaceMid(18,[8,3,9,6,10,13,11,16,7,17],[8,5,2,9,3,12,10,7,16,11,14,17],[2,7,3,4],[3,5,7,8,6],)}]
-print("18 finish")
-jsonBase[2]["la grande couronne"][0]["mid"]+=[{"12":findQuickPlaceMid(12,[8,3,9,6,10,13,11,16,7,17,18,15],[8,5,2,9,3,12,10,7,16,11,14,17],[2,7,3,4],[3,5,7,8,6,10],)}]
-print("12 finish")
-jsonBase[2]["la grande couronne"][0]["mid"]+=[{"1":findQuickPlaceMid(1,[8,3,9,6,10,13,11,16,7,17,18,15,12,2],[8,5,2,9,3,12,10,7,16,11,14,17],[2,7,3,4],[3,5,7,8,6,10,2],)}]
-print("1 finish")
+# jsonBase[2]["la grande couronne"][0]["mid"]+=[{"18":findQuickPlaceMid(18,[8,3,9,6,10,13,11,16,7,17],[8,5,2,9,3,12,10,7,16,11,14,17],[2,7,3,4],[3,5,7,8,6],)}]
+# print("18 finish")
+# jsonBase[2]["la grande couronne"][0]["mid"]+=[{"12":findQuickPlaceMid(12,[8,3,9,6,10,13,11,16,7,17,18,15],[8,5,2,9,3,12,10,7,16,11,14,17],[2,7,3,4],[3,5,7,8,6,10],)}]
+# print("12 finish")
+# jsonBase[2]["la grande couronne"][0]["mid"]+=[{"1":findQuickPlaceMid(1,[8,3,9,6,10,13,11,16,7,17,18,15,12,2],[8,5,2,9,3,12,10,7,16,11,14,17],[2,7,3,4],[3,5,7,8,6,10,2],)}]
+# print("1 finish")
 
+
+
+print(jsonBase)
+#jsonBase += [{"croix du bas":[]}]
+#print(jsonBase)
+#jsonBase[3]["croix du bas"]+=[{"colorMid":[]}]
+#jsonBase[3]["croix du bas"]+=[{"mid":[]}]
+#jsonBase[3]["croix du bas"][1]["mid"]+=[{"0":findQuickPlaceGroupMid(0,[8,3,9,6,10,13,11,16,7,17,18,15,12,2,1,4],[8,5,2,9,3,12,10,7,16,11,14,17],[2,7,3,4],[3,5,7,8,6,10,2,1],)}]
+
+jsonBase += [{"placer les coins":[]}]
+print(jsonBase)
+jsonBase[4]["placer les coins"]+=[{"groupCross":[]}]
+
+print("0 finish")
 
 
 file = open('base.json','w')

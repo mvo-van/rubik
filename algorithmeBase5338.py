@@ -138,6 +138,72 @@ def findQuickPlaceMid(nbr,lstOkMid,lstOkCross,lstOkgroupCross,lstOkgroupMid):
             test.cube['mid'][i] = -1
     return result
 
+def findQuickPlaceColorGroupMid(nbr,lstOkMid,lstOkCross,lstOkgroupCross,lstOkgroupMid):
+    arg="RR'"
+    arg=re.sub(" $","",re.sub(r"([BUFDLR][\'2]?)",r"\1 ",re.sub("[\t ]","",arg)))
+    arg=re.split(" ",arg)
+    test = rubik(arg)
+    result = {}
+    for i in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]:
+        test.cube['mid'][i] = -1
+        test.cube['cross'][i] = -1
+        if i < 12:
+            test.cube['groupMid'][i] = -1
+        if i < 8:
+            test.cube['groupCross'][i] = -1    
+  
+    for i in lstOkMid:
+        test.cube['mid'][i] = i
+    for i in lstOkCross:
+        test.cube['cross'][i] = i
+    for i in lstOkgroupMid:
+        test.cube['groupMid'][i] = i
+    for i in lstOkgroupCross:
+        test.cube['groupCross'][i] = i
+    
+    for i in [0,1,2,3,4,5,6,7,8,9,10,11]:
+        if i not in lstOkgroupMid:
+            test.cube['groupMid'][i] = nbr
+            #print(test.cube["mid"])
+            chemin = findChemin(test,'')
+            #print(chemin)
+            result[str(i)]=chemin
+            test.cube['groupMid'][i] = -1
+    return result
+
+def findQuickPlaceGroupMid(nbr,lstOkMid,lstOkCross,lstOkgroupCross,lstOkgroupMid):
+    arg="RR'"
+    arg=re.sub(" $","",re.sub(r"([BUFDLR][\'2]?)",r"\1 ",re.sub("[\t ]","",arg)))
+    arg=re.split(" ",arg)
+    test = rubik(arg)
+    result = {}
+    for i in [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23]:
+        test.cube['mid'][i] = -1
+        test.cube['cross'][i] = -1
+        if i < 12:
+            test.cube['groupMid'][i] = -1
+        if i < 8:
+            test.cube['groupCross'][i] = -1    
+  
+    for i in lstOkMid:
+        test.cube['mid'][i] = i
+    for i in lstOkCross:
+        test.cube['cross'][i] = i
+    for i in lstOkgroupMid:
+        test.cube['groupMid'][i] = i
+    for i in lstOkgroupCross:
+        test.cube['groupCross'][i] = i
+    
+    for i in [0,1,2,3,4,5,6,7,8,9,10,11]:
+        if i not in lstOkgroupMid:
+            test.cube['groupMid'][i] = nbr
+            #print(test.cube["mid"])
+            chemin = findChemin(test,'')
+            #print(chemin)
+            result[str(i)]=chemin
+            test.cube['groupMid'][i] = -1
+    return result
+
 def findQuickPlaceCross(nbr,lstOkMid,lstOkCross,lstOkgroupCross,lstOkgroupMid):
     arg="RR'"
     arg=re.sub(" $","",re.sub(r"([BUFDLR][\'2]?)",r"\1 ",re.sub("[\t ]","",arg)))
@@ -173,75 +239,104 @@ def findQuickPlaceCross(nbr,lstOkMid,lstOkCross,lstOkgroupCross,lstOkgroupMid):
     #print(test.cube['mid'],test.cube['cross'],test.cube['groupMid'],test.cube['groupCross'])
 
 def findChemin(cube,notMouv):    
-    lstMouv="UFBRLD"
-    lstSubMouv="'2"
-    difChemin=[[]]
-    lstMouv=lstMouv.replace(notMouv,'')
-    newDifChemin=[]
-    
+    # lstMouv="UFBRLD"
+    # lstSubMouv="'2"
+    # difChemin=[[]]
+    # lstMouv=lstMouv.replace(notMouv,'')
+    # newDifChemin=[]
+    file = open('lstMouv.json','r')
+    jsonMouv = json.loads(file.read())
+    file.close()
     if verfiCube(cube)==1:
         return []
-    while 1:        
-        newDifChemin=[]
-        for chemin in difChemin:
+    #while 1:        
+        # newDifChemin=[]
+        # for chemin in jsonMouv:
             
-            #print(chemin)
-            lstMouv="UFBRLD"
-            if len(chemin) > 0:
-                lstMouv=lstMouv.replace(chemin[-1][0],'')
-            #newChemin=chemin
-            for mouv in lstMouv:    
-                newChemin=chemin.copy()
-                newChemin += [mouv]
-                newDifChemin+=[newChemin]
-                #print(newDifChemin)
-                for sub in lstSubMouv:
-                    newChemin=chemin.copy()
-                    newChemin += [mouv+sub]
-                    newDifChemin+=[newChemin]
-        for chemin in newDifChemin:
-            testCube = rubik(["R","R'"])
-            testCube.cube['mid']=cube.cube['mid'].copy()
-            testCube.cube['cross']=cube.cube['cross'].copy()
-            testCube.cube['groupMid']=cube.cube['groupMid'].copy()
-            testCube.cube['groupCross']=cube.cube['groupCross'].copy()
-            testCube.mix(chemin)
-            if verfiCube(testCube):
-                return chemin
-        difChemin=newDifChemin
+        #     #print(chemin)
+        #     #lstMouv="UFBRLD"
+        #     # if len(chemin) > 0:
+        #     #     lstMouv=lstMouv.replace(chemin[-1][0],'')
+        #     #newChemin=chemin
+        #     for mouv in lstMouv:    
+        #         newChemin=chemin.copy()
+        #         newChemin += [mouv]
+        #         newDifChemin+=[newChemin]
+        #         #print(newDifChemin)
+        #         for sub in lstSubMouv:
+        #             newChemin=chemin.copy()
+        #             newChemin += [mouv+sub]
+        #             newDifChemin+=[newChemin]
+    for chemin in jsonMouv:
+        testCube = rubik(["R","R'"])
+        testCube.cube['mid']=cube.cube['mid'].copy()
+        testCube.cube['cross']=cube.cube['cross'].copy()
+        testCube.cube['groupMid']=cube.cube['groupMid'].copy()
+        testCube.cube['groupCross']=cube.cube['groupCross'].copy()
+        testCube.mix(chemin)
+        if verfiCube(testCube):
+            return chemin
+    return[]
+#    difChemin=newDifChemin
 
-file = open('base.json','r')
+file = open('base5338.json','r')
 jsonBase = json.loads(file.read())
 file.close()
+print(jsonBase)
+# jsonBase += [{"face 8":[]}]
 # print(jsonBase)
-# jsonBase += [{"croix du haut":[]}]
+# # jsonBase[0]["croix du haut"]+=[{"mid":[]}]
+# # jsonBase[0]["croix du haut"][0]["mid"]+=[{"8":findQuickPlaceMid(8,[],[],[],[],)}]
+# # print("8 finish")
+# # jsonBase[0]["croix du haut"][0]["mid"]+=[{"9":findQuickPlaceMid(9,[8,3],[],[],[3],)}]
+# # print("9 finish")
+# # jsonBase[0]["croix du haut"][0]["mid"]+=[{"10":findQuickPlaceMid(10,[8,3,9,6],[],[],[3,5],)}]
+# # print("10 finish")
+# # jsonBase[0]["croix du haut"][0]["mid"]+=[{"11":findQuickPlaceMid(11,[8,3,9,6,10,13],[],[],[3,5,7],)}]
+# # print("11 finish")
+# # print(jsonBase)
+# # jsonBase += [{"face du haut":[]}]
+# # print(jsonBase)
+# # jsonBase[1]["face du haut"]+=[{"cross":[]}]
+# # jsonBase[1]["face du haut"][0]["cross"]+=[{"8":findQuickPlaceCross(8,[8,3,9,6,10,13,11,16],[],[],[3,5,7,8],)}]
+# # print("8 finish")
+# # jsonBase[1]["face du haut"][0]["cross"]+=[{"9":findQuickPlaceCross(9,[8,3,9,6,10,13,11,16],[8,5,2],[2],[3,5,7,8],)}]
+# # print("9 finish")
+# # jsonBase[1]["face du haut"][0]["cross"]+=[{"10":findQuickPlaceCross(10,[8,3,9,6,10,13,11,16],[8,5,2,9,3,12],[2,7],[3,5,7,8],)}]
+# # print("10 finish")
+# # jsonBase[1]["face du haut"][0]["cross"]+=[{"11":findQuickPlaceCross(11,[8,3,9,6,10,13,11,16],[8,5,2,9,3,12,10,7,16],[2,7,3],[3,5,7,8],)}]
+# # print("11 finish")
+
+print(jsonBase)
+jsonBase += [{"couronne 3":[]}]
 # print(jsonBase)
-# jsonBase[0]["croix du haut"]+=[{"mid":[]}]
-# jsonBase[0]["croix du haut"][0]["mid"]+=[{"8":findQuickPlaceMid(8,[],[],[],[],)}]
-# print("8 finish")
-# jsonBase[0]["croix du haut"][0]["mid"]+=[{"9":findQuickPlaceMid(9,[8,3],[],[],[3],)}]
-# print("9 finish")
-# jsonBase[0]["croix du haut"][0]["mid"]+=[{"10":findQuickPlaceMid(10,[8,3,9,6],[],[],[3,5],)}]
-# print("10 finish")
-# jsonBase[0]["croix du haut"][0]["mid"]+=[{"11":findQuickPlaceMid(11,[8,3,9,6,10,13],[],[],[3,5,7],)}]
-# print("11 finish")
-# print(jsonBase)
-# jsonBase += [{"face du haut":[]}]
-# print(jsonBase)
-# jsonBase[1]["face du haut"]+=[{"cross":[]}]
-# jsonBase[1]["face du haut"][0]["cross"]+=[{"8":findQuickPlaceCross(8,[8,3,9,6,10,13,11,16],[],[],[3,5,7,8],)}]
-# print("8 finish")
-# jsonBase[1]["face du haut"][0]["cross"]+=[{"9":findQuickPlaceCross(9,[8,3,9,6,10,13,11,16],[8,5,2],[2],[3,5,7,8],)}]
-# print("9 finish")
-# jsonBase[1]["face du haut"][0]["cross"]+=[{"10":findQuickPlaceCross(10,[8,3,9,6,10,13,11,16],[8,5,2,9,3,12],[2,7],[3,5,7,8],)}]
-# print("10 finish")
-# jsonBase[1]["face du haut"][0]["cross"]+=[{"11":findQuickPlaceCross(11,[8,3,9,6,10,13,11,16],[8,5,2,9,3,12,10,7,16],[2,7,3],[3,5,7,8],)}]
-# print("11 finish")
+jsonBase[1]["couronne 3"]+=[{"mid":[]}]
+jsonBase[1]["couronne 3"][0]["mid"]+=[{"7":findQuickPlaceMid(7,[8,3,9,6,10,13,11,16],[8,5,2,9,3,12,10,7,16],[2,7,3],[3,5,7,8],)}]
+print("7 finish")
+## jsonBase[2]["la grande couronne"][0]["mid"]+=[{"18":findQuickPlaceMid(18,[8,3,9,6,10,13,11,16,7,17],[8,5,2,9,3,12,10,7,16,11,14,17],[2,7,3,4],[3,5,7,8,6],)}]
+## print("18 finish")
+jsonBase[1]["couronne 3"][0]["mid"]+=[{"12":findQuickPlaceMid(12,[8,3,9,6,10,13,11,16,7,17],[8,5,2,9,3,12,10,7,16],[2,7,3],[3,5,7,8,6],)}]
+print("12 finish")
+jsonBase[1]["couronne 3"][0]["mid"]+=[{"1":findQuickPlaceMid(1,[8,3,9,6,10,13,11,16,7,17,12,2],[8,5,2,9,3,12,10,7,16],[2,7,3],[3,5,7,8,6,2],)}]
+print("1 finish")
 
 
 
+print(jsonBase)
+#jsonBase += [{"croix du bas":[]}]
+#print(jsonBase)
+#jsonBase[3]["croix du bas"]+=[{"colorMid":[]}]
+#jsonBase[3]["croix du bas"]+=[{"mid":[]}]
+#jsonBase[3]["croix du bas"][1]["mid"]+=[{"0":findQuickPlaceGroupMid(0,[8,3,9,6,10,13,11,16,7,17,18,15,12,2,1,4],[8,5,2,9,3,12,10,7,16,11,14,17],[2,7,3,4],[3,5,7,8,6,10,2,1],)}]
 
-file = open('base.json','w')
+# jsonBase += [{"placer les coins":[]}]
+# print(jsonBase)
+# jsonBase[4]["placer les coins"]+=[{"groupCross":[]}]
+
+#print("0 finish")
+
+
+file = open('base5338.json','w')
 file.write(json.dumps(jsonBase))
 file.close()
 #print(json)
