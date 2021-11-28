@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    utile.py                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mvo-van- <mvo-van-@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/11/13 12:05:37 by mvo-van-          #+#    #+#              #
+#    Updated: 2021/11/28 13:53:26 by mvo-van-         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 import random
 import re
 
@@ -49,7 +61,7 @@ def cleanMouvement(listMouvement):
     return mouvs
 
 def creeMelange(arg):
-    if re.search("^(([ \t]*[BUFDLR][\'2]?[ \t]*)*)|(-g[0-9]+)$",arg):   
+    if re.match(r"^((([ \t]*[BUFDLR][\'2]?[ \t]*)*)|(-g[0-9]+)){1}$",arg):
         if re.search("^(-g[0-9]+)$",arg):
             arg = melangeGenerat(arg[2:])
             print(arg+"\n")

@@ -1,21 +1,33 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    bibli.py                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mvo-van- <mvo-van-@student.42.fr>          +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/11/13 12:05:47 by mvo-van-          #+#    #+#              #
+#    Updated: 2021/11/28 13:58:11 by mvo-van-         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 import re
 
 ERREURARG = """Mauvais argument
-       python3 ./rubik [MELANGE] [OPTION]...
+       python3 rubik.py [MELANGE] [OPTION]...
         MELANGE : 
-            -"^([FRUBLD]['2]? )*$" : melange a effectuer
-            -g[0-99] : generatino d'un melange d'une longeur donner
+            -"^([FRUBLD]['2]? )*$" : melange a effectue
+            -g[0-99] : generation d'un melange d'une longeur donnee
         OPTIONS :
-            -v visualisation de chaque coup effectuer sur le rubik's cube
+            -v visualisation de chaque coup effectue sur le rubik's cube
             -h visualisation par sous-etapes
             -m[0-2] choix de l'algorithme de resolution
-                    0 : algo debutent
+                    0 : algo debutant
                     1 : algo 8355
-                    2 : algo generale
+                    2 : algo general
             -t total mouvements
-        EXEMPLES :  python3 ./rubik "F R U B L D"
-                    python3 ./rubik "F R U B L D" -v -m1
-                    python3 ./rubik -g65 -h -v"""
+        EXEMPLES :  python3 rubik.py "F R U B L D"
+                    python3 rubik.py "F R U B L D" -v -m1
+                    python3 rubik.py -g65 -h -v"""
 
 dictTag = {"TAGv" : 1 << 0, "TAGh" : 1 << 1, "TAG0" : 1 << 2, "TAG1" : 1 << 3, "TAG2" : 1 << 4, "TAGt" : 1 << 5}
 
